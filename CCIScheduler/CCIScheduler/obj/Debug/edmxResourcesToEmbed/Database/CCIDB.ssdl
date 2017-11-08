@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Users" EntityType="Model1.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Reservations" EntityType="Model1.Store.Reservations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="Model1.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserReservations" Association="Model1.Store.UserReservations">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Reservations" EntitySet="Reservations" />
+    </AssociationSet>
+    <AssociationSet Name="RoomReservations" Association="Model1.Store.RoomReservations">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="Reservations" EntitySet="Reservations" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserPassword" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserEmail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserFirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserLastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserPrivledgeLevel" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reservations">
+    <Key>
+      <PropertyRef Name="ReservID" />
+    </Key>
+    <Property Name="ReservID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReservTime" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReservDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RoomNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserID" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserUserID" Type="int" Nullable="false" />
+    <Property Name="Room_RoomNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="RoomNumber" />
+    </Key>
+    <Property Name="RoomNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoomCapacity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RoomHasProjector" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RoomHasPodium" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RoomOutletCount" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="UserReservations">
+    <End Role="User" Type="Model1.Store.Users" Multiplicity="1" />
+    <End Role="Reservations" Type="Model1.Store.Reservations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Reservations">
+        <PropertyRef Name="UserUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomReservations">
+    <End Role="Room" Type="Model1.Store.Rooms" Multiplicity="1" />
+    <End Role="Reservations" Type="Model1.Store.Reservations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomNumber" />
+      </Principal>
+      <Dependent Role="Reservations">
+        <PropertyRef Name="Room_RoomNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

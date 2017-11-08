@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="Model1.User" />
+    <EntitySet Name="Reservations" EntityType="Model1.Reservations" />
+    <AssociationSet Name="UserReservations" Association="Model1.UserReservations">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Reservations" EntitySet="Reservations" />
+    </AssociationSet>
+    <EntitySet Name="Rooms" EntityType="Model1.Room" />
+    <AssociationSet Name="RoomReservations" Association="Model1.RoomReservations">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="Reservations" EntitySet="Reservations" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserPassword" Type="String" Nullable="false" />
+    <Property Name="UserEmail" Type="String" Nullable="false" />
+    <Property Name="UserFirstName" Type="String" Nullable="false" />
+    <Property Name="UserLastName" Type="String" Nullable="false" />
+    <Property Name="UserPrivledgeLevel" Type="String" Nullable="false" />
+    <NavigationProperty Name="Reservations" Relationship="Model1.UserReservations" FromRole="User" ToRole="Reservations" />
+  </EntityType>
+  <EntityType Name="Reservations">
+    <Key>
+      <PropertyRef Name="ReservID" />
+    </Key>
+    <Property Name="ReservID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReservTime" Type="String" Nullable="false" />
+    <Property Name="ReservDate" Type="String" Nullable="false" />
+    <Property Name="RoomNumber" Type="String" Nullable="false" />
+    <Property Name="UserID" Type="String" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Model1.UserReservations" FromRole="Reservations" ToRole="User" />
+    <Property Name="UserUserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Room" Relationship="Model1.RoomReservations" FromRole="Reservations" ToRole="Room" />
+  </EntityType>
+  <Association Name="UserReservations">
+    <End Type="Model1.User" Role="User" Multiplicity="1" />
+    <End Type="Model1.Reservations" Role="Reservations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Reservations">
+        <PropertyRef Name="UserUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="RoomNumber" />
+    </Key>
+    <Property Name="RoomNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoomCapacity" Type="String" Nullable="false" />
+    <Property Name="RoomHasProjector" Type="String" Nullable="false" />
+    <Property Name="RoomHasPodium" Type="String" Nullable="false" />
+    <Property Name="RoomOutletCount" Type="String" Nullable="false" />
+    <NavigationProperty Name="Reservations" Relationship="Model1.RoomReservations" FromRole="Room" ToRole="Reservations" />
+  </EntityType>
+  <Association Name="RoomReservations">
+    <End Type="Model1.Room" Role="Room" Multiplicity="1" />
+    <End Type="Model1.Reservations" Role="Reservations" Multiplicity="*" />
+  </Association>
+</Schema>
